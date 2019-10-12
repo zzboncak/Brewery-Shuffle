@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>HTML wireframe</title>
+    <title>Brewery Finder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css">
     <link rel="stylesheet" type="text/css" href="main.css">
@@ -10,16 +10,36 @@
     <main role="main">
         <header role="banner">
             <div class="container">
-                    <form id="js-form">
+                    <h1>Brewery Finder</h1>
+                    <form id="js-form" class="input-form">
                             <label for="search-term">Search: </label>
                             <input type="text" name="search-term" id="search-term">
                             <input type="submit" value="Search Brewery">
                         </form>
+
+                        <div class="slidecontainer"> 
+                            <label for="results-limit" class="results-limit-label">Number of Results:</label>
+                            <input type="range" name="results-limit" min="1" max="10" value="5" class="slider" id="myRange"> 
+                        </div>
             </div>
         </header>
 
-        <section>
-            Section 1
+        <section class="map-section">
+            <div class="map-container">
+                <img src="Images/map.png" alt="Map of images" class="map">
+            </div>
+        </section>
+
+        <section id="js-results" class="results-container">
+            <div class="brewery">
+                <img src="Images/Beer.png" alt="brewery picture" class="brewery-picture">
+                
+                <div class="brewery-info">
+                    <h2 class="brewery-title">Brewery Title</h2>
+                    <p class="brewery-description">This is a brief description of the brewery.</p>
+                </div>
+
+            </div>
         </section>
 
     </main>
