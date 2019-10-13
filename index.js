@@ -6,14 +6,17 @@ function watchForm() {
         let limit = $('#myRange').val();
         if (userZip == "") {
             alert(`Please input a Zip code`);
-        }else if (typeof(userZip) !== 'number') {
-            alert(`Please input a number for the Zip code`);
-        }else{
+        }
+        else{
             //this is where the API will be called
+            let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDq8NboefEBnsZ5q98K6FxtLnZKvAiPjHI&location=41.83635100000001,-88.21690269999999&radius=50000&keyword=brewery`;
+
+            fetch(url).then(response => response.json()).then(responseJson => console.log(responseJson));
         }
 
-        console.log();
     })
 }
+
+
 
 $(watchForm);
