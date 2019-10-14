@@ -16,4 +16,14 @@ function watchForm() {
     })
 }
 
+let url = `https://api.openbrewerydb.org/breweries/2547`;
+
+let brewery = fetch(url).then(response => response.json()).then(responseJson => getBreweryName(responseJson));
+
+function getBreweryName(responseJson) {
+    let brewery = responseJson;
+    console.log(brewery.name);
+}
+
+
 $(watchForm);
