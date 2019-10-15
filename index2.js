@@ -25,7 +25,6 @@ function watchForm() {
 function getStateBreweries(userState, page=1) {
     let baseUrl = `https://api.openbrewerydb.org/breweries?by_state=`;
     let url = baseUrl + userState + `&page=${page}&per_page=50`;
-    //console.log(url);
     fetch(url).then(response => response.json()).then(responseJson => logBreweries(responseJson, userState, page));
 }
 
@@ -40,6 +39,8 @@ function logBreweries(responseJson, userState, page) {
         let event = new Event('doneCalling');
         document.dispatchEvent(event);
 
+    //if the response is a full 50 breweries, it pushes the results to the master brewery array
+    //and calls the API again for the next page number
     }else if (responseJson.length = 50) {
         Array.prototype.push.apply(breweries, responseJson);
         let newPage = page + 1;
@@ -54,12 +55,5 @@ document.addEventListener('doneCalling', function (event) {
     let breweriesZip = breweries.filter(brewery => brewery.postal_code.includes(userZip));
     console.log(breweriesZip);
 });
-
-function filterBreweriesByZip(responseJson) {
-    let zipBreweries = responseJson.filter(function(object) {
-        return object.postal_code == "60555";
-    });
-    console.log(zipBreweries);
-}
 
 $(watchForm);
