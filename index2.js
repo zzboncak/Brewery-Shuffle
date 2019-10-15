@@ -1,17 +1,17 @@
 let breweries = [];
-let userZip;
+let userCity;
 
 function watchForm() {
     //this function watches for the form to be submitted
     $('#js-form').submit(event => {
         event.preventDefault();
         let userState = $('#search-state').val();
-        userZip = $('#search-zip').val();
+        userCity = $('#search-city').val();
         let limit = $('#myRange').val();
         
         //clears out any breweries in the array if another search is executed
         breweries = [];
-        if (userState == "" || userZip == "") {
+        if (userState == "" || userCity == "") {
             alert(`Please enter a State and Zip`);
         }else{
             //this is where the API will be called
@@ -52,7 +52,7 @@ function logBreweries(responseJson, userState, page) {
 //need to sort the data by zipcode and render to the page
 document.addEventListener('doneCalling', function (event) {
     console.log(`this worked`);
-    let breweriesZip = breweries.filter(brewery => brewery.postal_code.includes(userZip));
+    let breweriesZip = breweries.filter(brewery => brewery.city.includes(userCity));
     console.log(breweriesZip);
 });
 
