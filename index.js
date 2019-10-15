@@ -64,11 +64,16 @@ function renderMap(userInput) {
 
             map.setCenter(results[0].geometry.location);
         }
+
+        let url = buildUrl(breweryName);
+        console.log(url);
+        fetch(url).then(response => response.json()).then(responseJson => console.log(responseJson));
+
     });
       
-    let url = buildUrl(breweryName);
+    /*let url = buildUrl(breweryName);
     console.log(url);
-    fetch(url).then(response => response.json()).then(responseJson => console.log(responseJson));
+    fetch(url).then(response => response.json()).then(responseJson => console.log(responseJson));*/
 }
 
 function buildUrl(breweryName) {
