@@ -1,4 +1,3 @@
-
 function watchForm() {
     //this function watches for the form to be submitted
     $('#js-form').submit(event => {
