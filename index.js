@@ -17,4 +17,12 @@ function watchForm() {
     })
 }
 
+
+
+$("#button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#map-section").offset().top
+    }, 2000);
+});
+
 $(watchForm);
