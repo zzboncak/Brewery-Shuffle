@@ -57,6 +57,10 @@
   width: 90%;
 }
 
+#map {
+  height: 300px;;
+}
+
 /* 
   Responsive Mobile */
 
