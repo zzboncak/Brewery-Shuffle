@@ -23,7 +23,7 @@ function watchForm() {
 $("#button").click(function() {
     $('html, body').animate({
         scrollTop: $("#js-results").offset().top
-    }, 2000);
+    }, 1800);
 });
 
 
