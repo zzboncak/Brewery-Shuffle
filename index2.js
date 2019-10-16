@@ -51,8 +51,12 @@ function logBreweries(responseJson, userState, userCity, page) {
 //custom event listener for when the API calls are all done running
 //need to sort the data by zipcode and render to the page
 document.addEventListener('doneCalling', function (event) {
-    $('#js-results').empty();
-    renderResults(breweries);
+    if (breweries.length === 0) {
+        alert(`No results with this search, please try a different city.`);
+    } else {
+        $('#js-results').empty();
+        renderResults(breweries);
+    }
 });
 
 function renderResults(breweries) {
