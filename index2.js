@@ -51,9 +51,24 @@ function logBreweries(responseJson, userState, userCity, page) {
 //custom event listener for when the API calls are all done running
 //need to sort the data by zipcode and render to the page
 document.addEventListener('doneCalling', function (event) {
-    console.log(`this worked`);
-    let breweriesZip = breweries.filter(brewery => brewery.city.includes(userCity));
-    console.log(breweriesZip);
+    $('#js-results').empty();
+    renderResults(breweries);
 });
+
+function renderResults(breweries) {
+    for (let i=0; i<breweries.length; i++) {
+        $('#js-results').append(`
+        <div class="brewery">
+                <img src="Images/Beer.png" alt="brewery picture" class="brewery-picture">
+                
+                <div class="brewery-info">
+                    <h2 class="brewery-title">${breweries[i].name}</h2>
+                    <p class="brewery-address">${breweries[i].street} ${breweries[i].city}, ${breweries[i].state} ${breweries[i].postal_code}</p>
+                    <a href="${breweries[i].website_url}" target="_blank"><span class="brewery-url">${breweries[i].website_url}</span></a>
+                </div>
+
+            </div>`);
+    }
+}
 
 $(watchForm);
