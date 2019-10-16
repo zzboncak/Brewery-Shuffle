@@ -21,7 +21,7 @@ function watchForm() {
 
 $("#button").click(function() {
     $('html, body').animate({
-        scrollTop: $("#map-section").offset().top
+        scrollTop: $("#js-results").offset().top
     }, 2000);
 });
 

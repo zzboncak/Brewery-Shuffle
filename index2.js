@@ -20,6 +20,13 @@ function watchForm() {
     })
 }
 
+$("#button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#js-results").offset().top
+    }, 2000);
+});
+
+
 //the API only allows the user to call 50 breweries at a time. These two functions iterates through
 //all the pages until it's done.
 function getStateBreweries(userState, userCity, page=1) {

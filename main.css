@@ -57,14 +57,21 @@ font-weight: 100;
     background-color: #aaa;
   }
 
-  
-.search-box {
+  .select-city{
+    padding: 20px 24px;
+    width: 25%;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: left;
+  }
+.select-state {
       padding: 20px 24px;
-      width: 50%;
+      width: 15%;
       border-radius: 50px;
-      font-size: 25px;
+      font-size: 18px;
       font-weight: 900;
-      text-align: center;
+      text-align: left;
 }
 
 
