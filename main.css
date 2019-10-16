@@ -10,7 +10,47 @@
     text-align: center;
     line-height: 1.5;
   }
+
+  @font-face {
+    font-family: 'afternoon in stereo';
+    src: url(fonts/Afternoon\ in\ Stereo.ttf);
+    font-style: normal;
+    font-weight: 100;
+  }
   
+
+  input.button{
+  font-size: 25px;
+  background-color: rgba(0,0,0,.5);
+   display:inline-block;
+   padding:0.5em 3em;
+   border:0.25em solid #FFFFFF;
+   margin:0 0.3em 0.3em 0;
+  box-sizing: border-box;
+   text-decoration:none;
+   text-transform:uppercase;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    color:rgb(255, 255, 255);
+    text-align:center;
+    transition: all 0.15s;
+    }
+    .button:hover{
+    color:#DDDDDD;
+    border-color:rgb(101, 197, 141);
+    }
+    .button:active{
+    color:#BBBBBB;
+    border-color:rgb(17, 207, 0);
+    }
+
+h1{
+color: white;
+font-size: 150px;
+font-family: 'afternoon in stereo';
+font-weight: 100;
+}
+
   footer {
     width: 100%;
     padding: 1% 0;
@@ -18,8 +58,20 @@
   }
 
   
-  
+.search-box {
+      padding: 20px 24px;
+      width: 50%;
+      border-radius: 50px;
+      font-size: 25px;
+      font-weight: 900;
+      text-align: center;
+}
+
+
   header {
+    background-image: url(https://i.imgur.com/Su0fBEM.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
     padding: 12% 0;
     min-height: 400px;
   }
@@ -35,6 +87,8 @@
   }
   
 .input-form {
+  color: white;
+  font-size: 40px;
   margin-top: 100px;
 }
 
@@ -43,7 +97,9 @@
 }
 
 .results-limit-label {
-  font-size: 13px;
+  font-size: 20px;
+  font-weight: 100%;
+  color: white;
 }
 
 .slidecontainer {
@@ -74,8 +130,6 @@
       flex: 1 1;
     }
     
-  
-
     .info {
       display: flex;
       flex-direction: column;
