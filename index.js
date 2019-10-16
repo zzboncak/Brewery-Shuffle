@@ -2,6 +2,7 @@ function watchForm() {
     //this function watches for the form to be submitted
     $('#js-form').submit(event => {
         event.preventDefault();
+
         let userZip = $('#search-term').val();
         let limit = $('#myRange').val();
         if (userZip == "") {
@@ -23,5 +24,8 @@ $("#button").click(function() {
         scrollTop: $("#map-section").offset().top
     }, 2000);
 });
+
+
+
 
 $(watchForm);
