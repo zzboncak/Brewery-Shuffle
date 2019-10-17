@@ -1,5 +1,7 @@
 let breweries = [];
 let userCity;
+let body = [];
+
 
 function watchForm() {
     //this function watches for the form to be submitted
@@ -11,6 +13,7 @@ function watchForm() {
         
         //clears out any breweries in the array if another search is executed
         breweries = [];
+        body = [];
         if (userState == "" || userCity == "") {
             alert(`Please enter a State and Zip`);
         }else{
@@ -72,6 +75,13 @@ document.addEventListener('doneCalling', function (event) {
     }
 });
 
+document.addEventListener('doneConstructingBody', function (event) {
+    //custon event listener to send http request and build the map
+    renderMap();
+});
+
+
+
 function renderResults(breweries) {
     for (let i=0; i<breweries.length; i++) {
         $('#js-results').append(`
@@ -88,9 +98,6 @@ function renderResults(breweries) {
     }
 }
 
-let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=IL&locality=warrenville&postalCode=60555&addressLine=29W416%20Butternut%20Ln&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
-
-let body = [];
 //This function takes an array of objects and begins building
 //the body of an HTTP POST call to Bing Maps API for a static map
 function getLongAndLat(arrayOfObjects, i=0) {
@@ -99,6 +106,11 @@ function getLongAndLat(arrayOfObjects, i=0) {
     if (arrayOfObjects.length == i){
         let httpBody = body.join("&");
         console.log(httpBody);
+        console.log(httpBody.length);
+        //need to add custom event listener here as well to signal when all this calling is done.
+        let event = new Event('doneConstructingBody');
+        document.dispatchEvent(event);
+
         return httpBody;
     }
     else if (brewery.latitude === null && brewery.longitude === null) {
