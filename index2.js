@@ -1,3 +1,4 @@
+//globals
 let breweries = [];
 let userCity;
 let body = [];
@@ -16,20 +17,13 @@ function watchForm() {
         breweries = [];
         body = [];
         if (userState == "" || userCity == "") {
-            alert(`Please enter a State and Zip`);
+            alert(`Please enter a State and City`);
         }else{
-            //this is where the API will be called
+            //this is where the initial API will be called
             getStateBreweries(userState, userCity);
         }
     })
 }
-
-$("#button").click(function() {
-    $('html, body').animate({
-        scrollTop: $("#js-results").offset().top
-    }, 1800);
-});
-
 
 //the API only allows the user to call 50 breweries at a time. These two functions iterates through
 //all the pages until it's done.
@@ -67,21 +61,12 @@ document.addEventListener('doneCalling', function (event) {
     } else {
         $('#js-results').empty();
         renderResults(breweries);
-        
-        //experimenting with implementing a static map
         //this function will get all the longitude and latitude
         //coordinates from our array of breweries, and use those
-        //to build a static map with Bing Maps API
+        //to build a static map
         getLongAndLat(breweries);
     }
 });
-
-document.addEventListener('doneConstructingBody', function (event) {
-    //custon event listener to send http request and build the map
-    initMap();
-});
-
-
 
 function renderResults(breweries) {
     for (let i=0; i<breweries.length; i++) {
@@ -107,8 +92,8 @@ function getLongAndLat(arrayOfObjects, i=0) {
     if (arrayOfObjects.length == i){
         console.log(body);
 
-        //need to add custom event listener here as well to signal when all this calling is done.
-        let event = new Event('doneConstructingBody');
+        //custom event listener to signal that all the geocoding calling is done.
+        let event = new Event('doneGettingLatLng');
         document.dispatchEvent(event);
 
         return body;
@@ -125,19 +110,8 @@ function getLongAndLat(arrayOfObjects, i=0) {
             .then(response => response.json())
             .then(responseJson => handleGeocodeResponse(responseJson, arrayOfObjects, i))
     }else{
-        addPin(arrayOfObjects, i);
+        addLatLng(arrayOfObjects, i);
     }
-}
-
-function addPin(arrayOfObjects, i) {
-    let brewery = arrayOfObjects[i];
-    let pin = {
-        latitude: brewery.latitude,
-        longitude: brewery.longitude,
-    };
-    body[i] = pin;
-    i += 1;
-    getLongAndLat(arrayOfObjects, i);
 }
 
 function handleGeocodeResponse(response, arrayOfObjects, i) {
@@ -152,8 +126,24 @@ function handleGeocodeResponse(response, arrayOfObjects, i) {
     getLongAndLat(arrayOfObjects, i);
 }
 
+function addLatLng(arrayOfObjects, i) {
+    let brewery = arrayOfObjects[i];
+    let pin = {
+        latitude: brewery.latitude,
+        longitude: brewery.longitude,
+    };
+    body[i] = pin;
+    i += 1;
+    getLongAndLat(arrayOfObjects, i);
+}
+
 //attempting to upload pins to a google map -- round 2
 //from https://developers.google.com/maps/documentation/javascript/importing_data
+
+document.addEventListener('doneGettingLatLng', function (event) {
+    //custon event listener to initialize the static map once we have all the coordinates
+    initMap();
+});
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -177,8 +167,6 @@ function makePins(breweryLatLngs) {
         });
       }
 }
-
-
 
 //for formating the state name for geocode query
 function abbreviateState(stateName) {
@@ -286,5 +274,12 @@ function abbreviateState(stateName) {
     }
     return stateAbbrev;
 }
+
+//animation to scroll to the results section when clicked
+$("#button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#js-results").offset().top
+    }, 1800);
+});
 
 $(watchForm);
