@@ -117,9 +117,11 @@ function getLongAndLat(arrayOfObjects, i=0) {
 function handleGeocodeResponse(response, arrayOfObjects, i) {
     let latitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
     let longitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
+    let name = arrayOfObjects[i].name;
     let pin = {
         latitude: latitude,
         longitude: longitude,
+        title: name,
     };
     body[i] = pin;
     i += 1;
@@ -131,6 +133,7 @@ function addLatLng(arrayOfObjects, i) {
     let pin = {
         latitude: brewery.latitude,
         longitude: brewery.longitude,
+        title: brewery.name,
     };
     body[i] = pin;
     i += 1;
@@ -164,7 +167,8 @@ function makePins(breweryLatLngs) {
         var latLng = new google.maps.LatLng(coords.latitude,coords.longitude);
         var marker = new google.maps.Marker({
           position: latLng,
-          map: map
+          map: map,
+          title: coords.title,
         });
       }
 }
