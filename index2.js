@@ -85,7 +85,7 @@ function renderResults(breweries) {
 }
 
 //This function takes an array of objects and begins building
-//the body of an HTTP POST call to Bing Maps API for a static map
+//an array of objects whose contents are the lats and longs of each brewery
 function getLongAndLat(arrayOfObjects, i=0) {
     //console.log(arrayOfObjects);
     let brewery = arrayOfObjects[i];
@@ -141,14 +141,15 @@ function addLatLng(arrayOfObjects, i) {
 //from https://developers.google.com/maps/documentation/javascript/importing_data
 
 document.addEventListener('doneGettingLatLng', function (event) {
+    let brewery1 = body[0];
     //custon event listener to initialize the static map once we have all the coordinates
-    initMap();
+    initMap(brewery1);
 });
 
-function initMap() {
+function initMap(brewery1) {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: new google.maps.LatLng(41.7925884,-88.0105120520319),
+        zoom: 13,
+        center: new google.maps.LatLng(brewery1.latitude,brewery1.longitude),
         mapTypeId: 'terrain'
     });
 
