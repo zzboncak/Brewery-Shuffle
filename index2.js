@@ -63,6 +63,12 @@ document.addEventListener('doneCalling', function (event) {
     } else {
         $('#js-results').empty();
         renderResults(breweries);
+        
+        //experimenting with implementing a static map
+        //this function will get all the longitude and latitude
+        //coordinates from our array of breweries, and use those
+        //to build a static map with Bing Maps API
+        getLongAndLat(breweries);
     }
 });
 
@@ -84,31 +90,48 @@ function renderResults(breweries) {
 
 let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=IL&locality=warrenville&postalCode=60555&addressLine=29W416%20Butternut%20Ln&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
 
-function getLongAndLat(arrayOfObjects) {
-    console.log(arrayOfObjects);
-    let body = "";
-    for (let i=0; i<arrayOfObjects.length; i++) {
-        let brewery = arrayOfObjects[i];
-        if (brewery.latitude === null && brewery.longitude === null) {
-            //call geocoding API to get it and append to body
-            let state = abbreviateState(brewery.state);
-            let street = brewery.street.replace(" ", "%20");
-            let city = brewery.city;
-            let zip = brewery.postal_code;
-            let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
-            fetch(geoCodeUrl).then(response => response.json()).then(responseJson => handleGeocodeResponse(responseJson));
-        }else{
-            let pin = `pp=${brewery.latitude},${brewery.longitude};64;${i+1}`;
-            body = body + "&" + pin;
-        }
+let body = [];
+//This function takes an array of objects and begins building
+//the body of an HTTP POST call to Bing Maps API for a static map
+function getLongAndLat(arrayOfObjects, i=0) {
+    //console.log(arrayOfObjects);
+    let brewery = arrayOfObjects[i];
+    if (arrayOfObjects.length == i){
+        let httpBody = body.join("&");
+        console.log(httpBody);
+        return httpBody;
     }
-    console.log(body);
-    return body;
+    else if (brewery.latitude === null && brewery.longitude === null) {
+        //If no latitude and logitude is provided, geocode it by
+        //calling Bing geocoding API and append to HTTP body
+        let state = abbreviateState(brewery.state);
+        let street = brewery.street.replace(" ", "%20");
+        let city = brewery.city;
+        let zip = brewery.postal_code;
+        let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+        fetch(geoCodeUrl)
+            .then(response => response.json())
+            .then(responseJson => handleGeocodeResponse(responseJson, arrayOfObjects, i))
+    }else{
+        addPin(arrayOfObjects, i);
+    }
 }
 
-function handleGeocodeResponse(response) {
-    let data = response.resourceSets[0].resources[0].geocodePoints[0].coordinates;
-    console.log(data);
+function addPin(arrayOfObjects, i) {
+    let brewery = arrayOfObjects[i];
+    let pin = `pp=${brewery.latitude},${brewery.longitude};64;${i+1}`;
+    body[i] = pin;
+    i += 1;
+    getLongAndLat(arrayOfObjects, i);
+}
+
+function handleGeocodeResponse(response, arrayOfObjects, i) {
+    let latitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
+    let longitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
+    let string = `pp=${latitude},${longitude};64;${i+1}`
+    body[i] = string;
+    i += 1;
+    getLongAndLat(arrayOfObjects, i);
 }
 
 //for formating the state name for geocode query
