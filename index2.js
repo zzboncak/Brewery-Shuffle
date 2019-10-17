@@ -1,6 +1,7 @@
 let breweries = [];
 let userCity;
 let body = [];
+var map;
 
 
 function watchForm() {
@@ -77,7 +78,7 @@ document.addEventListener('doneCalling', function (event) {
 
 document.addEventListener('doneConstructingBody', function (event) {
     //custon event listener to send http request and build the map
-    renderMap();
+    initMap();
 });
 
 
@@ -104,14 +105,13 @@ function getLongAndLat(arrayOfObjects, i=0) {
     //console.log(arrayOfObjects);
     let brewery = arrayOfObjects[i];
     if (arrayOfObjects.length == i){
-        let httpBody = body.join("&");
-        console.log(httpBody);
-        console.log(httpBody.length);
+        console.log(body);
+
         //need to add custom event listener here as well to signal when all this calling is done.
         let event = new Event('doneConstructingBody');
         document.dispatchEvent(event);
 
-        return httpBody;
+        return body;
     }
     else if (brewery.latitude === null && brewery.longitude === null) {
         //If no latitude and logitude is provided, geocode it by
@@ -131,7 +131,10 @@ function getLongAndLat(arrayOfObjects, i=0) {
 
 function addPin(arrayOfObjects, i) {
     let brewery = arrayOfObjects[i];
-    let pin = `pp=${brewery.latitude},${brewery.longitude};64;${i+1}`;
+    let pin = {
+        latitude: brewery.latitude,
+        longitude: brewery.longitude,
+    };
     body[i] = pin;
     i += 1;
     getLongAndLat(arrayOfObjects, i);
@@ -140,11 +143,42 @@ function addPin(arrayOfObjects, i) {
 function handleGeocodeResponse(response, arrayOfObjects, i) {
     let latitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
     let longitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
-    let string = `pp=${latitude},${longitude};64;${i+1}`
-    body[i] = string;
+    let pin = {
+        latitude: latitude,
+        longitude: longitude,
+    };
+    body[i] = pin;
     i += 1;
     getLongAndLat(arrayOfObjects, i);
 }
+
+//attempting to upload pins to a google map -- round 2
+//from https://developers.google.com/maps/documentation/javascript/importing_data
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: new google.maps.LatLng(41.7925884,-88.0105120520319),
+        mapTypeId: 'terrain'
+    });
+
+    let breweryLatLngs = body;
+
+    makePins(breweryLatLngs);
+}
+
+function makePins(breweryLatLngs) {
+    for (var i = 0; i < breweryLatLngs.length; i++) {
+        var coords = breweryLatLngs[i];
+        var latLng = new google.maps.LatLng(coords.latitude,coords.longitude);
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map
+        });
+      }
+}
+
+
 
 //for formating the state name for geocode query
 function abbreviateState(stateName) {
