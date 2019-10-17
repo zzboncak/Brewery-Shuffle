@@ -19,13 +19,21 @@ function watchForm() {
         }
     })
 }
-
+//smooth scroll
 $("#button").click(function() {
     $('html, body').animate({
         scrollTop: $("#js-results").offset().top
     }, 1800);
 });
 
+//slider script
+var rangeslider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
 //the API only allows the user to call 50 breweries at a time. These two functions iterates through
 //all the pages until it's done.
@@ -38,7 +46,7 @@ function getStateBreweries(userState, userCity, page=1) {
 //if the response is less than 50 results, then that's all the breweries that are left
 //if there are exactly 50, there may be more, so it calls the API again with an increase of 1 in the page number
 function logBreweries(responseJson, userState, userCity, page) {
-    if (responseJson.length < 50) {
+    if (responseJson.length < 10) {
         Array.prototype.push.apply(breweries, responseJson);
         //console.log(breweries);
         
@@ -48,7 +56,7 @@ function logBreweries(responseJson, userState, userCity, page) {
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
-    }else if (responseJson.length = 50) {
+    }else if (responseJson.length = 10) {
         Array.prototype.push.apply(breweries, responseJson);
         let newPage = page + 1;
         getStateBreweries(userState, userCity, newPage);
@@ -80,6 +88,142 @@ function renderResults(breweries) {
 
             </div>`);
     }
+}
+
+let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=IL&locality=warrenville&postalCode=60555&addressLine=29W416%20Butternut%20Ln&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+
+function getLongAndLat(arrayOfObjects) {
+    console.log(arrayOfObjects);
+    let body = "";
+    for (let i=0; i<arrayOfObjects.length; i++) {
+        let brewery = arrayOfObjects[i];
+        if (brewery.latitude === null && brewery.longitude === null) {
+            //call geocoding API to get it and append to body
+            let state = abbreviateState(brewery.state);
+            let street = brewery.street.replace(" ", "%20");
+            let city = brewery.city;
+            let zip = brewery.postal_code;
+            let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+            fetch(geoCodeUrl).then(response => response.json()).then(responseJson => handleGeocodeResponse(responseJson));
+        }else{
+            let pin = `pp=${brewery.latitude},${brewery.longitude};64;${i+1}`;
+            body = body + "&" + pin;
+        }
+    }
+    console.log(body);
+    return body;
+}
+
+function handleGeocodeResponse(response) {
+    let data = response.resourceSets[0].resources[0].geocodePoints[0].coordinates;
+    console.log(data);
+}
+
+//for formating the state name for geocode query
+function abbreviateState(stateName) {
+    let stateAbbrev;
+    if (stateName == "Alabama" || stateName == "alabama") {
+        stateAbbrev = "AL";
+    }else if (stateName == "Alaska" || stateName == "alaska") {
+        stateAbbrev = "AK";
+    }else if (stateName == "Arizona" || stateName == "arizona") {
+        stateAbbrev = "AZ";
+    }else if (stateName == "Arkansas" || stateName == "arkansas") {
+        stateAbbrev = "AR";
+    }else if (stateName == "California" || stateName == "california") {
+        stateAbbrev = "CA";
+    }else if (stateName == "Colorado" || stateName == "colorado") {
+        stateAbbrev = "CO";
+    }else if (stateName == "Connecticut" || stateName == "connecticut") {
+        stateAbbrev = "CT";
+    }else if (stateName == "Delaware" || stateName == "delaware") {
+        stateAbbrev = "DE";
+    }else if (stateName == "Florida" || stateName == "florida") {
+        stateAbbrev = "FL";
+    }else if (stateName == "Georgia" || stateName == "georgia") {
+        stateAbbrev = "GA";
+    }else if (stateName == "Hawaii" || stateName == "hawaii") {
+        stateAbbrev = "HI";
+    }else if (stateName == "Idaho" || stateName == "idaho") {
+        stateAbbrev = "ID";
+    }else if (stateName == "Illinois" || stateName == "illinois") {
+        stateAbbrev = "IL";
+    }else if (stateName == "Indiana" || stateName == "indiana") {
+        stateAbbrev = "IN";
+    }else if (stateName == "Iowa" || stateName == "iowa") {
+        stateAbbrev = "IA";
+    }else if (stateName == "Kansas" || stateName == "kansas") {
+        stateAbbrev = "KS";
+    }else if (stateName == "Kentucky" || stateName == "kentucky") {
+        stateAbbrev = "KY";
+    }else if (stateName == "Louisiana" || stateName == "louisiana") {
+        stateAbbrev = "LA";
+    }else if (stateName == "Maine" || stateName == "maine") {
+        stateAbbrev = "ME";
+    }else if (stateName == "Maryland" || stateName == "maryland") {
+        stateAbbrev = "MD";
+    }else if (stateName == "Massachusetts" || stateName == "massachusetts") {
+        stateAbbrev = "MA";
+    }else if (stateName == "Michigan" || stateName == "michigan") {
+        stateAbbrev = "MI";
+    }else if (stateName == "Minnesota" || stateName == "minnesota") {
+        stateAbbrev = "MN";
+    }else if (stateName == "Mississippi" || stateName == "mississippi") {
+        stateAbbrev = "MS";
+    }else if (stateName == "Missouri" || stateName == "missouri") {
+        stateAbbrev = "MO";
+    }else if (stateName == "Montana" || stateName == "montana") {
+        stateAbbrev = "MT";
+    }else if (stateName == "Nebraska" || stateName == "nebraska") {
+        stateAbbrev = "NE";
+    }else if (stateName == "Nevada" || stateName == "nevada") {
+        stateAbbrev = "NV";
+    }else if (stateName == "New_Hampshire" || stateName == "new_hampshire") {
+        stateAbbrev = "NH";
+    }else if (stateName == "New_Jersey" || stateName == "new_jersey") {
+        stateAbbrev = "NJ";
+    }else if (stateName == "New_Mexico" || stateName == "new_mexico") {
+        stateAbbrev = "NM";
+    }else if (stateName == "New_York" || stateName == "new_york") {
+        stateAbbrev = "NY";
+    }else if (stateName == "North_Carolina" || stateName == "north_carolina") {
+        stateAbbrev = "NC";
+    }else if (stateName == "North_Dakota" || stateName == "north_dakota") {
+        stateAbbrev = "ND";
+    }else if (stateName == "Ohio" || stateName == "ohio") {
+        stateAbbrev = "OH";
+    }else if (stateName == "Oklahoma" || stateName == "oklahoma") {
+        stateAbbrev = "OK";
+    }else if (stateName == "Oregon" || stateName == "oregon") {
+        stateAbbrev = "OR";
+    }else if (stateName == "Pennsylvania" || stateName == "pennsylvania") {
+        stateAbbrev = "PA";
+    }else if (stateName == "Rhode_Island" || stateName == "rhode_island") {
+        stateAbbrev = "RI";
+    }else if (stateName == "South_Carolina" || stateName == "south_carolina") {
+        stateAbbrev = "SC";
+    }else if (stateName == "South_Dakota" || stateName == "south_dakota") {
+        stateAbbrev = "SD";
+    }else if (stateName == "Tennessee" || stateName == "tennessee") {
+        stateAbbrev = "TN";
+    }else if (stateName == "Texas" || stateName == "texas") {
+        stateAbbrev = "TX";
+    }else if (stateName == "Utah" || stateName == "utah") {
+        stateAbbrev = "UT";
+    }else if (stateName == "Vermont" || stateName == "vermont") {
+        stateAbbrev = "VT";
+    }else if (stateName == "Virginia" || stateName == "virginia") {
+        stateAbbrev = "VA";
+    }else if (stateName == "Washington" || stateName == "washington") {
+        stateAbbrev = "WA";
+    }else if (stateName == "West_Virginia" || stateName == "west_virginia") {
+        stateAbbrev = "WV";
+    }else if (stateName == "Wisconsin" || stateName == "wisconsin") {
+        stateAbbrev = "WI";
+    }else if (stateName == "Wyoming" || stateName == "wyoming") {
+        stateAbbrev = "WY";
+    }
+    return stateAbbrev;
 }
 
 $(watchForm);
