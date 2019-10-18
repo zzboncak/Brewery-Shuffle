@@ -10,7 +10,8 @@
     <main role="main">
         <header role="banner">
             <div class="container">
-                    <h1>Brewery Finder</h1>
+                    <h1>Brewery Shuffle</h1>
+        <div class="search-container">
                     <form id="js-form" class="input-form">
 
 
@@ -69,9 +70,9 @@
                                 <option value="Wyoming">Wyoming</option>
                             </select>
                             
-                            <label for="search-city">City</label>
+                            <label for="search-city">City:</label>
                             <input type="text" name="search-city" id="search-city" placeholder="ex. Warrenville" class="select-city">
-                            <input type="submit" value="Search Brewery" class="button" id="button">
+                            <input type="submit" value="Shuffle!" class="button" id="button">
 
                         </form>
 
@@ -80,7 +81,7 @@
                             <input type="range" name="results-limit" min="1" max="10" value="5" class="slider" id="myRange"> 
                             <p>Value: <span id="demo"></span></p> 
                         </div>
-            </div>
+        </div>
         </header>
 
         <section id="js-results" class="results-container">
@@ -91,7 +92,7 @@
         </section>
 
     </main>
-    <footer role="content-info">Footer</footer>
+    <footer role="content-info"></footer>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq8NboefEBnsZ5q98K6FxtLnZKvAiPjHI"></script>
     <script src="jquery-3.4.1.min.js"></script>

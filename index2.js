@@ -1,4 +1,5 @@
 //globals
+let breweryRange;
 let breweries = [];
 let userCity;
 let body = [];
@@ -59,10 +60,18 @@ function logBreweries(responseJson, userState, userCity, page) {
     if (responseJson.length < 50) {
         Array.prototype.push.apply(breweries, responseJson);
         //console.log(breweries);
-        
+
+
+
+
+
+        breweryRange = randomizeBrewery(breweries);
+
+
         //custom event for executing other functions once all the API calls are done
         let event = new Event('doneCalling');
         document.dispatchEvent(event);
+        
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
@@ -73,6 +82,27 @@ function logBreweries(responseJson, userState, userCity, page) {
     }
 }
 
+function randomizeBrewery(breweries){
+    var currentIndex = breweries.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = breweries[currentIndex];
+    breweries[currentIndex] = breweries[randomIndex];
+    breweries[randomIndex] = temporaryValue;
+  }
+
+
+   let limit =  $('#myRange').val();
+   console.log(limit);
+    let limitedBreweries = breweries.slice(0,limit);
+
+  return limitedBreweries;
+}
+
+
 //custom event listener for when the API calls are all done running
 //need to sort the data by zipcode and render to the page
 document.addEventListener('doneCalling', function (event) {
@@ -80,11 +110,11 @@ document.addEventListener('doneCalling', function (event) {
         alert(`No results with this search, please try a different city.`);
     } else {
         $('#js-results').empty();
-        renderResults(breweries);
+        renderResults(breweryRange);
         //this function will get all the longitude and latitude
         //coordinates from our array of breweries, and use those
         //to build a static map
-        getLongAndLat(breweries);
+        getLongAndLat(breweryRange);
     }
 });
 
