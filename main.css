@@ -73,12 +73,14 @@ font-weight: 100;
     text-align: left;
   }
 .select-state {
-      padding: 20px 24px;
+  -webkit-appearance: none;   
+  padding: 20px 24px;
       width: 15%;
       border-radius: 50px;
       font-size: 18px;
       font-weight: 900;
       text-align: left;
+      
 }
 
 
