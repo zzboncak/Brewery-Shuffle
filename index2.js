@@ -1,5 +1,9 @@
+//globals
 let breweries = [];
 let userCity;
+let body = [];
+var map;
+
 
 function watchForm() {
     //this function watches for the form to be submitted
@@ -11,21 +15,15 @@ function watchForm() {
         
         //clears out any breweries in the array if another search is executed
         breweries = [];
+        body = [];
         if (userState == "" || userCity == "") {
-            alert(`Please enter a State and Zip`);
+            alert(`Please enter a State and City`);
         }else{
-            //this is where the API will be called
+            //this is where the initial API will be called
             getStateBreweries(userState, userCity);
         }
     })
 }
-
-$("#button").click(function() {
-    $('html, body').animate({
-        scrollTop: $("#js-results").offset().top
-    }, 1800);
-});
-
 
 //the API only allows the user to call 50 breweries at a time. These two functions iterates through
 //all the pages until it's done.
@@ -63,6 +61,10 @@ document.addEventListener('doneCalling', function (event) {
     } else {
         $('#js-results').empty();
         renderResults(breweries);
+        //this function will get all the longitude and latitude
+        //coordinates from our array of breweries, and use those
+        //to build a static map
+        getLongAndLat(breweries);
     }
 });
 
@@ -82,33 +84,93 @@ function renderResults(breweries) {
     }
 }
 
-let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=IL&locality=warrenville&postalCode=60555&addressLine=29W416%20Butternut%20Ln&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+//This function takes an array of objects and begins building
+//an array of objects whose contents are the lats and longs of each brewery
+function getLongAndLat(arrayOfObjects, i=0) {
+    //console.log(arrayOfObjects);
+    let brewery = arrayOfObjects[i];
+    if (arrayOfObjects.length == i){
+        console.log(body);
 
-function getLongAndLat(arrayOfObjects) {
-    console.log(arrayOfObjects);
-    let body = "";
-    for (let i=0; i<arrayOfObjects.length; i++) {
-        let brewery = arrayOfObjects[i];
-        if (brewery.latitude === null && brewery.longitude === null) {
-            //call geocoding API to get it and append to body
-            let state = abbreviateState(brewery.state);
-            let street = brewery.street.replace(" ", "%20");
-            let city = brewery.city;
-            let zip = brewery.postal_code;
-            let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
-            fetch(geoCodeUrl).then(response => response.json()).then(responseJson => handleGeocodeResponse(responseJson));
-        }else{
-            let pin = `pp=${brewery.latitude},${brewery.longitude};64;${i+1}`;
-            body = body + "&" + pin;
-        }
+        //custom event listener to signal that all the geocoding calling is done.
+        let event = new Event('doneGettingLatLng');
+        document.dispatchEvent(event);
+
+        return body;
     }
-    console.log(body);
-    return body;
+    else if (brewery.latitude === null && brewery.longitude === null) {
+        //If no latitude and logitude is provided, geocode it by
+        //calling Bing geocoding API and append to HTTP body
+        let state = abbreviateState(brewery.state);
+        let street = brewery.street.replace(" ", "%20");
+        let city = brewery.city;
+        let zip = brewery.postal_code;
+        let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+        fetch(geoCodeUrl)
+            .then(response => response.json())
+            .then(responseJson => handleGeocodeResponse(responseJson, arrayOfObjects, i))
+    }else{
+        addLatLng(arrayOfObjects, i);
+    }
 }
 
-function handleGeocodeResponse(response) {
-    let data = response.resourceSets[0].resources[0].geocodePoints[0].coordinates;
-    console.log(data);
+function handleGeocodeResponse(response, arrayOfObjects, i) {
+    let latitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[0];
+    let longitude = response.resourceSets[0].resources[0].geocodePoints[0].coordinates[1];
+    let name = arrayOfObjects[i].name;
+    let pin = {
+        latitude: latitude,
+        longitude: longitude,
+        title: name,
+    };
+    body[i] = pin;
+    i += 1;
+    getLongAndLat(arrayOfObjects, i);
+}
+
+function addLatLng(arrayOfObjects, i) {
+    let brewery = arrayOfObjects[i];
+    let pin = {
+        latitude: brewery.latitude,
+        longitude: brewery.longitude,
+        title: brewery.name,
+    };
+    body[i] = pin;
+    i += 1;
+    getLongAndLat(arrayOfObjects, i);
+}
+
+//attempting to upload pins to a google map -- round 2
+//from https://developers.google.com/maps/documentation/javascript/importing_data
+
+document.addEventListener('doneGettingLatLng', function (event) {
+    let brewery1 = body[0];
+    //custon event listener to initialize the static map once we have all the coordinates
+    initMap(brewery1);
+});
+
+function initMap(brewery1) {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: new google.maps.LatLng(brewery1.latitude,brewery1.longitude),
+        mapTypeId: 'terrain'
+    });
+
+    let breweryLatLngs = body;
+
+    makePins(breweryLatLngs);
+}
+
+function makePins(breweryLatLngs) {
+    for (var i = 0; i < breweryLatLngs.length; i++) {
+        var coords = breweryLatLngs[i];
+        var latLng = new google.maps.LatLng(coords.latitude,coords.longitude);
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: coords.title,
+        });
+      }
 }
 
 //for formating the state name for geocode query
@@ -217,5 +279,12 @@ function abbreviateState(stateName) {
     }
     return stateAbbrev;
 }
+
+//animation to scroll to the results section when clicked
+$("#button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#js-results").offset().top
+    }, 1800);
+});
 
 $(watchForm);
