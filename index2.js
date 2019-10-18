@@ -48,7 +48,10 @@ rangeslider.oninput = function() {
 function getStateBreweries(userState, userCity, page=1) {
     let baseUrl = `https://api.openbrewerydb.org/breweries?by_state=${userState}&by_city=${userCity}`;
     let url = baseUrl + `&page=${page}&per_page=50`;
-    fetch(url).then(response => response.json()).then(responseJson => logBreweries(responseJson, userState, userCity, page));
+    fetch(url)
+        .then(response => response.json())
+        .then(responseJson => logBreweries(responseJson, userState, userCity, page))
+        .catch(err => alert(`Something failed: ${err.message}`));
 }
 
 //if the response is less than 50 results, then that's all the breweries that are left
@@ -135,10 +138,10 @@ function renderResults(breweries) {
 //This function takes an array of objects and begins building
 //an array of objects whose contents are the lats and longs of each brewery
 function getLongAndLat(arrayOfObjects, i=0) {
-    //console.log(arrayOfObjects);
+    console.log(arrayOfObjects);
     let brewery = arrayOfObjects[i];
     if (arrayOfObjects.length == i){
-        console.log(body);
+        //console.log(body);
 
         //custom event listener to signal that all the geocoding calling is done.
         let event = new Event('doneGettingLatLng');
@@ -150,15 +153,21 @@ function getLongAndLat(arrayOfObjects, i=0) {
         //If no latitude and logitude is provided, geocode it by
         //calling Bing geocoding API and append to HTTP body
         let state = abbreviateState(brewery.state);
-        let street = brewery.street.replace(" ", "%20");
+        let street = brewery.street.replace(/ /gm, "%20");
+        let streetFixed = street.replace(/#/gm,"");
         let city = brewery.city;
         let zip = brewery.postal_code;
-        let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${street}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+        let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${streetFixed}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+        console.log(geoCodeUrl);
         fetch(geoCodeUrl)
             .then(response => response.json())
             .then(responseJson => handleGeocodeResponse(responseJson, arrayOfObjects, i))
-    }else{
+            .catch(err => alert(`Something failed: ${err.message}`));
+    }else if (brewery.latitude !== null && brewery.longitude !== null){
         addLatLng(arrayOfObjects, i);
+    }else{
+        i += 1;
+        getLongAndLat(arrayOfObjects, i);
     }
 }
 

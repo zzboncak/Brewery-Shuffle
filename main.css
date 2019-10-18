@@ -85,11 +85,13 @@ font-weight: 100;
 .select-state {
   -webkit-appearance: none;
       padding: 13px 18px;
+
       width: 15%;
       border-radius: 50px;
       font-size: 18px;
       font-weight: 900;
       text-align: left;
+      
 }
 
 
