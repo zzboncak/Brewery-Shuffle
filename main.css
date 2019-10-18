@@ -51,10 +51,17 @@ font-family: 'afternoon in stereo';
 font-weight: 100;
 }
 
+.brewery{
+  display: block;
+  margin: 20px;
+  align-items: center;
+}
+
+
   footer {
     width: 100%;
     padding: 1% 0;
-    background-color: #aaa;
+    background-color: rgb(34, 34, 34);
   }
 
   .select-city{
@@ -86,12 +93,9 @@ font-weight: 100;
   section {
     min-height: 200px;
     padding: 6% 0;
-    background-color: #bbb;
+    background-color: rgb(255, 255, 255);
   }
   
-  section:nth-child(even) {
-    background-color: #ddd;
-  }
   
 .input-form {
   color: white;
@@ -114,6 +118,7 @@ font-weight: 100;
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
+  color: white;
 }
 
 #map {

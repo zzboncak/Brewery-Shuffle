@@ -25,6 +25,23 @@ function watchForm() {
     })
 }
 
+//smooth scroll
+$("#button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#js-results").offset().top
+    }, 1800);
+});
+
+//slider script
+var rangeslider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+
 //the API only allows the user to call 50 breweries at a time. These two functions iterates through
 //all the pages until it's done.
 function getStateBreweries(userState, userCity, page=1) {
@@ -36,7 +53,7 @@ function getStateBreweries(userState, userCity, page=1) {
 //if the response is less than 50 results, then that's all the breweries that are left
 //if there are exactly 50, there may be more, so it calls the API again with an increase of 1 in the page number
 function logBreweries(responseJson, userState, userCity, page) {
-    if (responseJson.length < 50) {
+    if (responseJson.length < 10) {
         Array.prototype.push.apply(breweries, responseJson);
         //console.log(breweries);
         
@@ -46,7 +63,7 @@ function logBreweries(responseJson, userState, userCity, page) {
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
-    }else if (responseJson.length = 50) {
+    }else if (responseJson.length = 10) {
         Array.prototype.push.apply(breweries, responseJson);
         let newPage = page + 1;
         getStateBreweries(userState, userCity, newPage);
@@ -83,6 +100,7 @@ function renderResults(breweries) {
             </div>`);
     }
 }
+
 
 //This function takes an array of objects and begins building
 //an array of objects whose contents are the lats and longs of each brewery
@@ -279,12 +297,5 @@ function abbreviateState(stateName) {
     }
     return stateAbbrev;
 }
-
-//animation to scroll to the results section when clicked
-$("#button").click(function() {
-    $('html, body').animate({
-        scrollTop: $("#js-results").offset().top
-    }, 1800);
-});
 
 $(watchForm);
