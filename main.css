@@ -19,7 +19,17 @@
   }
   
 
+.search-container{
+  font-family: Arial, Helvetica, sans-serif;
+  display:inline-block;
+  padding-top: 10px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 25px;
+}
+
+
   input.button{
+    border-radius: 15px;
   font-size: 25px;
   background-color: rgba(0,0,0,.5);
    display:inline-block;
@@ -65,7 +75,7 @@ font-weight: 100;
   }
 
   .select-city{
-    padding: 20px 24px;
+    padding: 13px 18px;
     width: 25%;
     border-radius: 50px;
     font-size: 18px;
@@ -73,7 +83,8 @@ font-weight: 100;
     text-align: left;
   }
 .select-state {
-      padding: 20px 24px;
+  -webkit-appearance: none;
+      padding: 13px 18px;
       width: 15%;
       border-radius: 50px;
       font-size: 18px;
@@ -86,8 +97,8 @@ font-weight: 100;
     background-image: url(https://i.imgur.com/Su0fBEM.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    padding: 12% 0;
-    min-height: 400px;
+    padding: 6% 0;
+    min-height: 300px;
   }
   
   section {
