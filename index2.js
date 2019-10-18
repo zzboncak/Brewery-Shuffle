@@ -5,7 +5,7 @@ let userCity;
 let body = [];
 var map;
 
-
+$( "#map" ).hide();
 function watchForm() {
     //this function watches for the form to be submitted
     $('#js-form').submit(event => {
@@ -119,6 +119,7 @@ document.addEventListener('doneCalling', function (event) {
 });
 
 function renderResults(breweries) {
+    $( "#map" ).show();
     for (let i=0; i<breweries.length; i++) {
         $('#js-results').append(`
         <div class="brewery">
@@ -206,9 +207,10 @@ document.addEventListener('doneGettingLatLng', function (event) {
     initMap(brewery1);
 });
 
+
 function initMap(brewery1) {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
+        zoom: 35,
         center: new google.maps.LatLng(brewery1.latitude,brewery1.longitude),
         mapTypeId: 'terrain'
     });
