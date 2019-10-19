@@ -144,6 +144,21 @@ font-weight: 100;
   margin-right: auto;
 }
 
+.icons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: rgb(121, 121, 121);
+  list-style: none;
+}
+
+i.fab.fa-google::before{
+  color: rgb(121, 121, 121);
+}
+i.fas.fa-coffee{
+  color: rgb(121, 121, 121);
+}
+
 /* 
   Responsive Mobile */
 
