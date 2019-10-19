@@ -111,9 +111,7 @@ function renderResults(breweries) {
     $( "#map" ).show();
     for (let i=0; i<breweries.length; i++) {
         $('#js-results').append(`
-        <div class="brewery">
-                <img src="Images/Beer.png" alt="brewery picture" class="brewery-picture">
-                
+        <div class="brewery">                
                 <div class="brewery-info">
                     <h2 class="brewery-title">${breweries[i].name}</h2>
                     <p class="brewery-address">${breweries[i].street} ${breweries[i].city}, ${breweries[i].state} ${breweries[i].postal_code}</p>
@@ -195,7 +193,7 @@ function initializeMap(){
 
 function initMap(brewery1) {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 35,
+        zoom: 14,
         center: new google.maps.LatLng(brewery1.latitude,brewery1.longitude),
         mapTypeId: 'terrain'
     });
