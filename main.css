@@ -103,6 +103,7 @@ font-weight: 100;
     background-size: cover;
     padding: 6% 0;
     max-height: 1000px;
+    align-content: auto;
   }
   
   section {
