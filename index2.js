@@ -20,18 +20,16 @@ function watchForm() {
         if (userState == "" || userCity == "") {
             alert(`Please enter a State and City`);
         }else{
+            //smooth scroll
+            $('html, body').animate({
+                scrollTop: $("#js-results").offset().top
+            }, 1800);
+            
             //this is where the initial API will be called
             getStateBreweries(userState, userCity);
         }
     })
 }
-
-//smooth scroll
-$("#button").click(function() {
-    $('html, body').animate({
-        scrollTop: $("#js-results").offset().top
-    }, 1800);
-});
 
 //slider script
 var rangeslider = document.getElementById("myRange");
