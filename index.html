@@ -76,6 +76,8 @@
 
                         </form>
 
+                        
+
                         <div class="slidecontainer"> 
                             <label for="results-limit" class="results-limit-label">Number of Results:</label>
                             <input type="range" name="results-limit" min="1" max="10" value="5" class="slider" id="myRange"> 
@@ -84,15 +86,15 @@
         </div>
         </header>
 
+                <div id="map" class="map"></div>
+
+
         <section id="js-results" class="results-container">
         </section>
 
-        <section class="google-map">
-            <div id="map"></div>
-        </section>
 
     </main>
-    <footer role="content-info"></footer>
+    <footer role="content-info" id="footer"></footer>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq8NboefEBnsZ5q98K6FxtLnZKvAiPjHI"></script>
     <script src="jquery-3.4.1.min.js"></script>
