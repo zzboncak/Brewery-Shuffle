@@ -61,17 +61,9 @@ function logBreweries(responseJson, userState, userCity, page) {
         Array.prototype.push.apply(breweries, responseJson);
         //console.log(breweries);
 
-
-
-
-
         breweryRange = randomizeBrewery(breweries);
 
-
-        //custom event for executing other functions once all the API calls are done
-        let event = new Event('doneCalling');
-        document.dispatchEvent(event);
-        
+        doneCalling()
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
@@ -95,17 +87,13 @@ function randomizeBrewery(breweries){
   }
 
 
-   let limit =  $('#myRange').val();
-   console.log(limit);
+    let limit =  $('#myRange').val();
     let limitedBreweries = breweries.slice(0,limit);
 
   return limitedBreweries;
 }
 
-
-//custom event listener for when the API calls are all done running
-//need to sort the data by zipcode and render to the page
-document.addEventListener('doneCalling', function (event) {
+function doneCalling() {
     if (breweries.length === 0) {
         alert(`No results with this search, please try a different city.`);
     } else {
@@ -116,7 +104,8 @@ document.addEventListener('doneCalling', function (event) {
         //to build a static map
         getLongAndLat(breweryRange);
     }
-});
+}
+
 
 function renderResults(breweries) {
     for (let i=0; i<breweries.length; i++) {
@@ -141,11 +130,8 @@ function getLongAndLat(arrayOfObjects, i=0) {
     console.log(arrayOfObjects);
     let brewery = arrayOfObjects[i];
     if (arrayOfObjects.length == i){
-        //console.log(body);
 
-        //custom event listener to signal that all the geocoding calling is done.
-        let event = new Event('doneGettingLatLng');
-        document.dispatchEvent(event);
+        initializeMap();
 
         return body;
     }
@@ -200,11 +186,10 @@ function addLatLng(arrayOfObjects, i) {
 //attempting to upload pins to a google map -- round 2
 //from https://developers.google.com/maps/documentation/javascript/importing_data
 
-document.addEventListener('doneGettingLatLng', function (event) {
+function initializeMap(){
     let brewery1 = body[0];
-    //custon event listener to initialize the static map once we have all the coordinates
     initMap(brewery1);
-});
+}
 
 function initMap(brewery1) {
     map = new google.maps.Map(document.getElementById('map'), {
