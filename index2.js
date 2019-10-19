@@ -6,6 +6,7 @@ let body = [];
 var map;
 
 $( "#map" ).hide();
+$( "#js-results" ).hide();
 function watchForm() {
     //this function watches for the form to be submitted
     $('#js-form').submit(event => {
@@ -106,6 +107,7 @@ function doneCalling() {
 
 
 function renderResults(breweries) {
+    $( "#js-results" ).show();
     $( "#map" ).show();
     for (let i=0; i<breweries.length; i++) {
         $('#js-results').append(`

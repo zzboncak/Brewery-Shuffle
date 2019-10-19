@@ -77,36 +77,37 @@
 
                         </form>
 
-                        </div>
-
                         
 
                         <div class="slidecontainer"> 
-                            <label for="results-limit" class="results-limit-label">Number of Breweries:</label>
+                            <label for="results-limit" class="results-limit-label">Number of Results:</label>
                             <input type="range" name="results-limit" min="1" max="10" value="5" class="slider" id="myRange"> 
-                            <p><span id="demo"></span></p> 
+                            <p>Value: <span id="demo"></span></p> 
                         </div>
         </div>
         </header>
 
-        
-        <div class="results-parent">
-            <section class="map-container">
+
+     <div class="results-parent" id="results-parent">
                 <div id="map" class="map"></div>
-            </section>
-
-            <section id="js-results" class="results-container">
-            </section>
-        </div>
-
+        <section id="js-results" class="results-container">
+        </section>
+    </div>
 
     </main>
     <footer role="content-info" id="footer">
-        <h3>Powered by</h3>
+        <h5>Powered by</h5>
         <ul class="icons">
             <li><a href="https://developers.google.com/maps/documentation/javascript/tutorial" target="_blank"><i class="fab fa-google"></i></a></li>
+            <li><a href="https://www.openbrewerydb.org/" target="_blank"><i class="fas fa-beer"></i></a></li>
+            <li><a href="https://docs.microsoft.com/en-us/bingmaps/rest-services/locations/find-a-location-by-address" target="_blank"><i class="fas fa-map-marked-alt"></i></a></li>
             <li><a href="https://en.wikipedia.org/wiki/Coffee" target="_blank"><i class="fas fa-coffee"></i></a></li>
         </ul>
+        <h5>Developer Team</h5>
+            <ul class="button-list">
+                <li><a href="https://esarmi21.github.io/jayPortfolio/" target="_blank"class="team-button">Jay S</a></li>
+                <li><a href="https://zzboncak.github.io/Portfolio/" target="_blank"class="team-button">Zack Zboncak</a></li>
+            </ul>
 
     </footer>
 

@@ -97,6 +97,7 @@ footer {
   text-align: left;
 }
 
+
 .select-state {
   -webkit-appearance: none;
   padding: 13px 18px;
@@ -108,15 +109,14 @@ footer {
 }
 
 
-header {
-  background-image: url(https://i.imgur.com/Su0fBEM.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 6% 0;
-  max-height: 1000px;
-  align-content: auto;
-}
-  
+  header {
+    background-image: url(https://i.imgur.com/Su0fBEM.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 6% 0;
+    align-content: auto;
+  }
+
 section {
   min-height: 200px;
   padding: 3% 0;
@@ -158,7 +158,7 @@ section {
 .icons{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   color: rgb(121, 121, 121);
   list-style: none;
 }
@@ -167,10 +167,49 @@ i.fab.fa-google::before{
   color: rgb(121, 121, 121);
 }
 
-i.fas.fa-coffee{
+i.fas.fa-coffee::before{
+  color: rgb(121, 121, 121);
+}
+i.fas.fa-beer::before{
+  color: rgb(121, 121, 121);
+}
+i.fas.fa-map-marked-alt::before{
   color: rgb(121, 121, 121);
 }
 
+.team-button{
+  margin: 50px;
+  text-decoration: none;
+  color: white;
+}
+
+h5{
+  text-align: center;
+}
+
+.button-list>*{
+  display: inline-block;
+  list-style: none;
+  background-color: rgba(0,0,0,.5);
+  border:0.15em solid #FFFFFF;
+    color: white;
+    padding:0.5em 3em;
+    font-family:'Roboto',sans-serif;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    margin: 0px 100px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.button-list>*:hover{
+  color:#DDDDDD;
+  border-color:rgb(101, 197, 141);
+  }
+  .button-list>*:active{
+  color:#BBBBBB;
+  border-color:rgb(17, 207, 0);
+  }
 /* 
   Responsive Mobile */
 
