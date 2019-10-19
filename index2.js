@@ -157,7 +157,7 @@ function getLongAndLat(arrayOfObjects, i=0) {
         let streetFixed = street.replace(/#/gm,"");
         let city = brewery.city;
         let zip = brewery.postal_code;
-        let geoCodeUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${streetFixed}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
+        let geoCodeUrl = `https://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${streetFixed}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
         console.log(geoCodeUrl);
         fetch(geoCodeUrl)
             .then(response => response.json())
