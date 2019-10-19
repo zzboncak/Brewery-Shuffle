@@ -21,10 +21,6 @@ function watchForm() {
         if (userState == "" || userCity == "") {
             alert(`Please enter a State and City`);
         }else{
-            //smooth scroll
-            $('html, body').animate({
-                scrollTop: $("#js-results").offset().top
-            }, 1800);
             
             //this is where the initial API will be called
             getStateBreweries(userState, userCity);
@@ -63,6 +59,11 @@ function logBreweries(responseJson, userState, userCity, page) {
         breweryRange = randomizeBrewery(breweries);
 
         doneCalling()
+
+        //smooth scroll
+        $('html, body').animate({
+            scrollTop: $("#js-results").offset().top
+        }, 1800);
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
