@@ -1,4 +1,4 @@
-# Brewery-Finder
+# Brewery-Shuffle
  By Zachary and Jay
 
 Brewery Shuffle is the answer to the beer enthusiast's constant problem: with so many great craft breweries out there, how do I pick which one to try?
