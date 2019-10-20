@@ -7,3 +7,15 @@ Enter Brewery Shuffle. Simply select a state and city and hit "SUFFLE!" and see 
 
  Live app: https://zzboncak.github.io/Brewery-Finder/
 
+Technology Used: HTML/CSS/JavaScript/jQuery
+
+APIs used:
+- Open Brewery DB API
+- Bing Geocoding
+- Google Maps Javascript API
+
+![landing page screenshot](/ScreenShots/landing-page.png)
+
+![map of breweries](/ScreenShots/brewery-map.png)
+
+![list of breweries](/ScreenShots/brewery-results.png)
