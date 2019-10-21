@@ -3,8 +3,7 @@
 }
   
 body {
-  font-family: "Open Sans",
-  sans-serif; 
+  font-family: "Open Sans", sans-serif; 
   font-size: 20px;
   color: #444;
   text-align: center;
@@ -97,7 +96,6 @@ footer {
   text-align: left;
 }
 
-
 .select-state {
   -webkit-appearance: none;
   padding: 13px 18px;
@@ -109,14 +107,13 @@ footer {
   color: rgb(90, 90, 90);
 }
 
-
-  header {
-    background-image: url(https://i.imgur.com/Su0fBEM.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 6% 0;
-    align-content: auto;
-  }
+header {
+  background-image: url(https://i.imgur.com/Su0fBEM.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 6% 0;
+  align-content: auto;
+}
 
 section {
   min-height: 200px;
@@ -124,11 +121,9 @@ section {
   background-color: rgb(255, 255, 255);
 }
   
-  
 .input-form {
   color: white;
   font-size: 40px;
-  /*margin-top: 100px;*/
 }
 
 .slider {
@@ -154,6 +149,7 @@ section {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
 }
 
 .icons{
@@ -193,26 +189,28 @@ h5{
   list-style: none;
   background-color: rgba(0,0,0,.5);
   border:0.15em solid #FFFFFF;
-    color: white;
-    padding:0.5em 3em;
-    font-family:'Roboto',sans-serif;
-    text-align: center;
-    text-decoration: none;
-    font-size: 10px;
-    margin: 0px 100px;
-    cursor: pointer;
-    transition: all 0.15s;
+  color: white;
+  padding:0.5em 3em;
+  font-family:'Roboto',sans-serif;
+  text-align: center;
+  text-decoration: none;
+  font-size: 10px;
+  margin: 0px 100px;
+  cursor: pointer;
+  transition: all 0.15s;
 }
+
 .button-list>*:hover{
   color:#DDDDDD;
   border-color:rgb(101, 197, 141);
-  }
-  .button-list>*:active{
+}
+
+.button-list>*:active{
   color:#BBBBBB;
   border-color:rgb(17, 207, 0);
-  }
-/* 
-  Responsive Mobile */
+}
+   
+/*Responsive Mobile */
 
 @media screen and (max-width: 768px) {
   header {

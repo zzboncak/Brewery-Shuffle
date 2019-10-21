@@ -21,10 +21,6 @@ function watchForm() {
         if (userState == "" || userCity == "") {
             alert(`Please enter a State and City`);
         }else{
-            //smooth scroll
-            $('html, body').animate({
-                scrollTop: $("#js-results").offset().top
-            }, 1800);
             
             //this is where the initial API will be called
             getStateBreweries(userState, userCity);
@@ -58,11 +54,15 @@ function getStateBreweries(userState, userCity, page=1) {
 function logBreweries(responseJson, userState, userCity, page) {
     if (responseJson.length < 50) {
         Array.prototype.push.apply(breweries, responseJson);
-        //console.log(breweries);
 
         breweryRange = randomizeBrewery(breweries);
 
         doneCalling()
+
+        //smooth scroll
+        $('html, body').animate({
+            scrollTop: $("#js-results").offset().top
+        }, 1800);
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
@@ -126,7 +126,6 @@ function renderResults(breweries) {
 //This function takes an array of objects and begins building
 //an array of objects whose contents are the lats and longs of each brewery
 function getLongAndLat(arrayOfObjects, i=0) {
-    console.log(arrayOfObjects);
     let brewery = arrayOfObjects[i];
     if (arrayOfObjects.length == i){
 
@@ -136,7 +135,7 @@ function getLongAndLat(arrayOfObjects, i=0) {
     }
     else if (brewery.latitude === null && brewery.longitude === null) {
         //If no latitude and logitude is provided, geocode it by
-        //calling Bing geocoding API and append to HTTP body
+        //calling Bing geocoding API
         let state = abbreviateState(brewery.state);
         let street = brewery.street.replace(/ /gm, "%20");
         let streetFixed = street.replace(/#/gm,"");
@@ -182,7 +181,7 @@ function addLatLng(arrayOfObjects, i) {
     getLongAndLat(arrayOfObjects, i);
 }
 
-//attempting to upload pins to a google map -- round 2
+//upload pins to a google map
 //from https://developers.google.com/maps/documentation/javascript/importing_data
 
 function initializeMap(){
