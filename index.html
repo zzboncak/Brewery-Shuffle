@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Brewery Finder</title>
+    <title>Brewery Shuffle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css">
     <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon">
     <script src="https://kit.fontawesome.com/5d6c9e02e1.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -12,7 +13,7 @@
         <header role="banner">
             <div class="container">
                     <h1>Brewery Shuffle</h1>
-        <div class="search-container">
+                <div class="search-container">
                     <form id="js-form" class="input-form">
                         <h4 class="form-description"><i>Find local breweries near you.</i></h4>
                         <div class="state-city">
@@ -74,9 +75,9 @@
                             <label for="search-city">City:</label>
                             <input type="text" name="search-city" id="search-city" placeholder="ex. Warrenville" class="select-city">
                             <input type="submit" value="Shuffle!" class="button" id="button">
-
+                        </div>
                         </form>
-
+                    
                         
 
                         <div class="slidecontainer"> 
@@ -85,14 +86,15 @@
                             <p><span id="demo"></span></p> 
                         </div>
 
-                    </div>
+                    
                 </div>
+            </div>
         </header>
 
 
-     <div class="results-parent" id="results-parent">
+     <div class="results-parent" id="results-parent" aria-live="polite">
         <div id="map" class="map"></div>
-        <section id="js-results" class="results-container">
+        <section id="js-results" class="results-container" aria-live="polite">
         </section>
     </div>
 
