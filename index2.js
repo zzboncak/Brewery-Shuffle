@@ -1,8 +1,8 @@
 //globals
-let breweryRange;
-let breweries = [];
-let userCity;
-let body = [];
+const state = {
+    breweries: [],
+    body: [],
+};
 var map;
 
 $( "#map" ).hide();
@@ -12,12 +12,12 @@ function watchForm() {
     $('#js-form').submit(event => {
         event.preventDefault();
         let userState = $('#search-state').val();
-        userCity = $('#search-city').val();
+        let userCity = $('#search-city').val();
         let limit = $('#myRange').val();
         
         //clears out any breweries in the array if another search is executed
-        breweries = [];
-        body = [];
+        state.breweries = [];
+        state.body = [];
         if (userState == "" || userCity == "") {
             alert(`Please enter a State and City`);
         }else{
@@ -53,11 +53,11 @@ function getStateBreweries(userState, userCity, page=1) {
 //if there are exactly 50, there may be more, so it calls the API again with an increase of 1 in the page number
 function logBreweries(responseJson, userState, userCity, page) {
     if (responseJson.length < 50) {
-        Array.prototype.push.apply(breweries, responseJson);
+        Array.prototype.push.apply(state.breweries, responseJson);
 
-        breweryRange = randomizeBrewery(breweries);
+        let breweryRange = randomizeBrewery(state.breweries);
 
-        doneCalling()
+        doneCalling(breweryRange)
 
         //smooth scroll
         $('html, body').animate({
@@ -67,7 +67,7 @@ function logBreweries(responseJson, userState, userCity, page) {
     //if the response is a full 50 breweries, it pushes the results to the master brewery array
     //and calls the API again for the next page number
     }else if (responseJson.length = 50) {
-        Array.prototype.push.apply(breweries, responseJson);
+        Array.prototype.push.apply(state.breweries, responseJson);
         let newPage = page + 1;
         getStateBreweries(userState, userCity, newPage);
     }
@@ -92,16 +92,16 @@ function randomizeBrewery(breweries){
   return limitedBreweries;
 }
 
-function doneCalling() {
+function doneCalling(breweries) {
     if (breweries.length === 0) {
         alert(`No results with this search, please try a different city.`);
     } else {
         $('#js-results').empty();
-        renderResults(breweryRange);
+        renderResults(breweries);
         //this function will get all the longitude and latitude
         //coordinates from our array of breweries, and use those
         //to build a static map
-        getLongAndLat(breweryRange);
+        getLongAndLat(breweries);
     }
 }
 
@@ -131,7 +131,7 @@ function getLongAndLat(arrayOfObjects, i=0) {
 
         initializeMap();
 
-        return body;
+        //return body;
     }
     else if (brewery.latitude === null && brewery.longitude === null) {
         //If no latitude and logitude is provided, geocode it by
@@ -142,7 +142,6 @@ function getLongAndLat(arrayOfObjects, i=0) {
         let city = brewery.city;
         let zip = brewery.postal_code;
         let geoCodeUrl = `https://dev.virtualearth.net/REST/v1/Locations?countryRegion=USU&adminDistrict=${state}&locality=${city}&postalCode=${zip}&addressLine=${streetFixed}&key=AqXXNX8owOM0j4Uz4_FvIYRMYpgaSr_nHkRvvgKGv0ZnRJ9bfgmnUkLyADX9JmgR`;
-        console.log(geoCodeUrl);
         fetch(geoCodeUrl)
             .then(response => response.json())
             .then(responseJson => handleGeocodeResponse(responseJson, arrayOfObjects, i))
@@ -164,7 +163,7 @@ function handleGeocodeResponse(response, arrayOfObjects, i) {
         longitude: longitude,
         title: name,
     };
-    body[i] = pin;
+    state.body[i] = pin;
     i += 1;
     getLongAndLat(arrayOfObjects, i);
 }
@@ -176,7 +175,7 @@ function addLatLng(arrayOfObjects, i) {
         longitude: brewery.longitude,
         title: brewery.name,
     };
-    body[i] = pin;
+    state.body[i] = pin;
     i += 1;
     getLongAndLat(arrayOfObjects, i);
 }
@@ -185,7 +184,7 @@ function addLatLng(arrayOfObjects, i) {
 //from https://developers.google.com/maps/documentation/javascript/importing_data
 
 function initializeMap(){
-    let brewery1 = body[0];
+    let brewery1 = state.body[0];
     initMap(brewery1);
 }
 
@@ -197,7 +196,7 @@ function initMap(brewery1) {
         mapTypeId: 'terrain'
     });
 
-    let breweryLatLngs = body;
+    let breweryLatLngs = state.body;
 
     makePins(breweryLatLngs);
 }
