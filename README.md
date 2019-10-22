@@ -5,7 +5,7 @@ Brewery Shuffle is the answer to the beer enthusiast's constant problem: with so
 
 Enter Brewery Shuffle. Simply select a state and city and hit "SUFFLE!" and see a randomized list of breweries in your area. Click on the brewery's link for more info, or check out the map to see how close it is to you.
 
- Live app: https://zzboncak.github.io/Brewery-Suffle/
+ Live app: https://github.com/zzboncak/Brewery-Shuffle
 
 Technology Used: HTML/CSS/JavaScript/jQuery
 

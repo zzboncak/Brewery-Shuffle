@@ -61,7 +61,7 @@ function logBreweries(responseJson, userState, userCity, page) {
 
         //smooth scroll
         $('html, body').animate({
-            scrollTop: $("#js-results").offset().top
+            scrollTop: $("#map").offset().top
         }, 1800);
 
     //if the response is a full 50 breweries, it pushes the results to the master brewery array

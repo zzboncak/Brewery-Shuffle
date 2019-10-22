@@ -48,6 +48,7 @@ input.button{
 .button:hover{
   color:#DDDDDD;
   border-color:rgb(101, 197, 141);
+  cursor: pointer;
 }
     
 .button:active{
@@ -142,6 +143,10 @@ section {
   align-items: center;
   margin-top: 40px;
   color: white;
+}
+
+#myRange{
+  cursor: pointer;
 }
 
 #map {
